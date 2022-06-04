@@ -1,5 +1,8 @@
 using Audit.EntityFramework;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
+using Ordering.Api.Validation;
 using Ordering.Application.Services.Orders;
 using Ordering.Domain.Models;
 using Ordering.Infrastructure;
@@ -21,9 +24,20 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+//validation
+builder.Services.AddFluentValidation(fv =>
+{
+    fv.RegisterValidatorsFromAssemblyContaining<OrderValidator>();
+    fv.ImplicitlyValidateChildProperties = true;
+    }
+);
+//builder.Services.AddTransient<IValidator<Order>, OrderValidator>();
+
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddControllers().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

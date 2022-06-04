@@ -25,9 +25,9 @@ namespace Ordering.Api.Controllers
             return Ok(await _orderService.GetAllAsync(page, pageSize));
         }
         [HttpPatch]
-        public async Task<IActionResult> UpdateStatus(int orderId, OrderStatus orderStatus)
+        public async Task<IActionResult> UpdateStatus(UpdateStatusDto input)
         {
-            return Ok(await _orderService.UpdateOrderStatusAsync(orderId, orderStatus));
+            return Ok(await _orderService.UpdateOrderStatusAsync(input.OrderId, input.OrderStatus));
         }
         [HttpDelete]
         public async Task<IActionResult> Delete(int orderId)

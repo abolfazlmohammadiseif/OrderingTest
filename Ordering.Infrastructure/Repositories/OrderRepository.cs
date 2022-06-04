@@ -16,10 +16,10 @@ namespace Ordering.Infrastructure.Repositories
             _context = context;
         }
 
+
         public async Task<List<Order>> GetAllOrders(int Page, int PageSize)
         {
-            //var result = await _context.Set<Order>()
-            var result = _context.Orders
+            var result = _context.Orders.Include(o => o.OrderItems)
                 .AsNoTracking()
                 .Skip((Page - 1) * PageSize)
                 .Take(PageSize)
@@ -28,10 +28,37 @@ namespace Ordering.Infrastructure.Repositories
             return result;
         }
 
+        public async Task<Order> GetById(int OrderId)
+        {
+            return await _context.Orders.FindAsync(OrderId);
+        }
+
         public async Task<int> InsertOrder(Order order)
         {
             await _context.AddAsync(order);
+            await _context.SaveChangesAsync();
             return order.Id;
+        }
+        public async Task<bool> Delete(Order Order)
+        {
+            var result = _context.Orders.Remove(Order);
+            await _context.SaveChangesAsync();
+            return true; ;
+        }
+
+        public async Task<bool> UpdateStatus(Order Order)
+        {
+            try
+            {
+                var result = _context.Orders.Update(Order);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
         }
     }
 }

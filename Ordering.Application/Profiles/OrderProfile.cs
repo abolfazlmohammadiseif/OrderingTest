@@ -12,7 +12,11 @@ namespace Ordering.Application.Profiles
     {
         public OrderProfile()
         {
-            CreateMap<Domain.Models.Order, OrderDto>().ReverseMap();
+            CreateMap<OrderDto, Domain.Models.Order>();
+            CreateMap<Domain.Models.Order, OrderViewModel>();
+            CreateMap<OrderItemDto, Domain.Models.OrderItem>();
+            CreateMap<Domain.Models.OrderItem, OrderItemViewModel>();
+
 
         }
     }

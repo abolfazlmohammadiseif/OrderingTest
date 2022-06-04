@@ -13,6 +13,6 @@ namespace Ordering.Application.Services.Orders
         Task<int> InsertOrderAsync(OrderDto orderDto);
         Task<bool> DeleteOrderAsync(int orderId);
         Task<bool> UpdateOrderStatusAsync(int orderId, OrderStatus status);
-        Task<List<OrderDto>> GetAllAsync(int Page, int PageSize);
+        Task<List<OrderViewModel>> GetAllAsync(int Page, int PageSize);
     }
 }

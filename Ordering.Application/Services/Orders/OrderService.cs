@@ -20,35 +20,40 @@ namespace Ordering.Application.Services.Orders
             _mapper = mapper;
         }
 
-        public Task<bool> DeleteOrderAsync(int orderId)
+        public async Task<bool> DeleteOrderAsync(int orderId)
         {
-            throw new NotImplementedException();
+            var order = await _orderRepository.GetById(orderId);
+            if (order != null)
+            {
+                await _orderRepository.Delete(order); 
+                return true;
+            }
+            return false;
         }
 
-        public async Task<List<OrderDto>> GetAllAsync(int Page, int PageSize)
+        public async Task<List<OrderViewModel>> GetAllAsync(int Page, int PageSize)
         {
             var result = await _orderRepository.GetAllOrders(Page, PageSize);
-            return _mapper.Map<List<OrderDto>>(result);
+            return _mapper.Map<List<OrderViewModel>>(result);
         }
 
         public async Task<int> InsertOrderAsync(OrderDto orderDto)
         {
-            var order = new Order
-            {
-                OrderDate = DateTime.Now,
-                Description = orderDto.Description,
-                CustomerId = orderDto.CustomerId,
-                OrderStatusId = orderDto.OrderStatusId,
-                PaymentMethodId = orderDto.PaymentMethodId,
-                //OrderItems = orderDto.OrderItems
-            };
+            var order = _mapper.Map<Order>(orderDto);
             var id = await _orderRepository.InsertOrder(order);
             return id;
         }
 
-        public Task<bool> UpdateOrderStatusAsync(int orderId, OrderStatus status)
+        public async Task<bool> UpdateOrderStatusAsync(int orderId, OrderStatus status)
         {
-            throw new NotImplementedException();
+            var order = await _orderRepository.GetById(orderId);
+            if (order != null)
+            {
+                order.OrderStatusId = status;
+                await _orderRepository.UpdateStatus(order);
+                return true;
+            }
+            return false;
         }
     }
 }

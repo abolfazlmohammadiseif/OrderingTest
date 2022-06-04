@@ -24,7 +24,7 @@ namespace Ordering.UnitTests.Api
         [Fact]
         public async Task Get_GivenNothing_ReturnList()
         {
-            var result = _orderController.Get();
+            var result = _orderController.Get(1,2);
             Assert.NotNull(result);
         }
     }

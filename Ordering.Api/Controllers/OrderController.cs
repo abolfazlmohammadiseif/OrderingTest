@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Ordering.Application.Services.Orders;
+using Ordering.Application.Services.Orders.Dto;
+using Ordering.Domain.Models;
 
 namespace Ordering.Api.Controllers
 {
@@ -12,10 +14,25 @@ namespace Ordering.Api.Controllers
         {
             _orderService = orderService;
         }
-        [HttpGet]
-        public IActionResult Get(int Page, int PageSize)
+        [HttpPost]
+        public async Task<IActionResult> Post(OrderDto input)
         {
-            return Ok( _orderService.GetAllAsync(Page, PageSize));
+            return Ok(await _orderService.InsertOrderAsync(input));
+        }
+        [HttpGet]
+        public async Task<IActionResult> Get(int page, int pageSize)
+        {
+            return Ok(await _orderService.GetAllAsync(page, pageSize));
+        }
+        [HttpPatch]
+        public async Task<IActionResult> UpdateStatus(int orderId, OrderStatus orderStatus)
+        {
+            return Ok(await _orderService.UpdateOrderStatusAsync(orderId, orderStatus));
+        }
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int orderId)
+        {
+            return Ok(await _orderService.DeleteOrderAsync(orderId));
         }
     }
 }

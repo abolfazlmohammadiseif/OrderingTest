@@ -9,6 +9,9 @@ namespace Ordering.Domain.Models
     public interface IOrderRepository
     {
         Task<List<Order>> GetAllOrders(int Page, int PageSize);
-        Task<int> InsertOrder(Order order);
+        Task<Order> GetById(int OrderId);
+        Task<bool> Delete(Order Order);
+        Task<bool> UpdateStatus(Order Order);
+        Task<int> InsertOrder(Order Order);
     }
 }

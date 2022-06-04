@@ -22,10 +22,10 @@ namespace Ordering.Application.Services.Orders
 
         public async Task<bool> DeleteOrderAsync(int orderId)
         {
-            var order = await _orderRepository.GetById(orderId);
+            var order = await _orderRepository.GetByIdAsync(orderId);
             if (order != null)
             {
-                await _orderRepository.Delete(order); 
+                await _orderRepository.DeleteAsync(order); 
                 return true;
             }
             return false;
@@ -33,24 +33,24 @@ namespace Ordering.Application.Services.Orders
 
         public async Task<List<OrderViewModel>> GetAllAsync(int Page, int PageSize)
         {
-            var result = await _orderRepository.GetAllOrders(Page, PageSize);
+            var result = await _orderRepository.GetAllOrdersAsync(Page, PageSize);
             return _mapper.Map<List<OrderViewModel>>(result);
         }
 
         public async Task<int> InsertOrderAsync(OrderDto orderDto)
         {
             var order = _mapper.Map<Order>(orderDto);
-            var id = await _orderRepository.InsertOrder(order);
+            var id = await _orderRepository.InsertOrderAsync(order);
             return id;
         }
 
         public async Task<bool> UpdateOrderStatusAsync(int orderId, OrderStatus status)
         {
-            var order = await _orderRepository.GetById(orderId);
+            var order = await _orderRepository.GetByIdAsync(orderId);
             if (order != null)
             {
                 order.OrderStatusId = status;
-                await _orderRepository.UpdateStatus(order);
+                await _orderRepository.UpdateStatusAsync(order);
                 return true;
             }
             return false;

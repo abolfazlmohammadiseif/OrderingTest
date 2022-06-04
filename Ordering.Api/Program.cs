@@ -25,14 +25,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//validation
+//validation config
 builder.Services.AddFluentValidation(fv =>
 {
     fv.RegisterValidatorsFromAssemblyContaining<OrderValidator>();
     fv.ImplicitlyValidateChildProperties = true;
-    }
-);
-//builder.Services.AddTransient<IValidator<Order>, OrderValidator>();
+});
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddControllers().AddJsonOptions(x =>

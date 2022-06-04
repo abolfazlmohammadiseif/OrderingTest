@@ -17,7 +17,7 @@ namespace Ordering.Infrastructure.Repositories
         }
 
 
-        public async Task<List<Order>> GetAllOrders(int Page, int PageSize)
+        public async Task<List<Order>> GetAllOrdersAsync(int Page, int PageSize)
         {
             var result = _context.Orders.Include(o => o.OrderItems)
                 .AsNoTracking()
@@ -28,25 +28,25 @@ namespace Ordering.Infrastructure.Repositories
             return result;
         }
 
-        public async Task<Order> GetById(int OrderId)
+        public async Task<Order> GetByIdAsync(int OrderId)
         {
             return await _context.Orders.FindAsync(OrderId);
         }
 
-        public async Task<int> InsertOrder(Order order)
+        public async Task<int> InsertOrderAsync(Order order)
         {
             await _context.AddAsync(order);
             await _context.SaveChangesAsync();
             return order.Id;
         }
-        public async Task<bool> Delete(Order Order)
+        public async Task<bool> DeleteAsync(Order Order)
         {
             var result = _context.Orders.Remove(Order);
             await _context.SaveChangesAsync();
             return true; ;
         }
 
-        public async Task<bool> UpdateStatus(Order Order)
+        public async Task<bool> UpdateStatusAsync(Order Order)
         {
             try
             {

@@ -10,21 +10,27 @@ using Xunit;
 
 namespace Ordering.UnitTests.Api
 {
-    public class OrderControllerTests
+    public class OrderControllerUnitTests
     {
-        private readonly OrderController _orderController;
+        private OrderController _orderController;
         private readonly Mock<IOrderService> _orderService;
-        public OrderControllerTests()
+        public OrderControllerUnitTests()
         {
             _orderService = new Mock<IOrderService>();
-
-            _orderController = new OrderController(_orderService.Object);
         }
 
         [Fact]
         public async Task Get_GivenNothing_ReturnList()
         {
-            var result = _orderController.Get(1,2);
+
+            //Arrange
+            _orderService.Setup(s => s.GetAllAsync(1, 2)).Returns(Task.FromResult(new List<Ordering.Application.Services.Orders.Dto.OrderViewModel>()));
+            _orderController = new OrderController(_orderService.Object);
+
+            //Act
+            var result = _orderController.Get(1, 2);
+
+            //Assert
             Assert.NotNull(result);
         }
     }
